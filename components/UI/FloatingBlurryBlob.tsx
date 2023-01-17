@@ -16,7 +16,7 @@ type Props = {
 const { ORANGE, PURPLE, GREEN, BLUE, RED } = FloatingBlurryBlobColors
 
 const FloatingBlurryBlob = ({
-  color = ORANGE,
+  color = BLUE,
   left,
   top,
   right,

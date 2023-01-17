@@ -58,6 +58,7 @@ export const CollectionsView = ({
             {header?.description}{' '}
           </div>
           <div className="mb-6 flex justify-end">
+            {/** 
             <TabSelector<VIEW_OPTIONS>
               defaultOption={VIEW_TABS[0]}
               options={VIEW_TABS}
@@ -66,6 +67,7 @@ export const CollectionsView = ({
                 setView(o.value)
               }}
             />
+            */}
           </div>
         </div>
       </div>

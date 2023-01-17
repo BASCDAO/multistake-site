@@ -42,6 +42,7 @@ export const HeaderSlim = () => {
           {environment.label !== 'mainnet-beta' && <Airdrop />}
         </div>
         <div className="flex-5 flex items-center justify-end gap-6">
+          {/** 
           <div
             className="cursor-pointer text-gray-400 transition hover:text-light-0"
             onClick={() => {
@@ -50,6 +51,7 @@ export const HeaderSlim = () => {
           >
             Admin
           </div>
+          */}
           {wallet.connected && wallet.publicKey ? (
             <AccountConnect
               dark={true}
