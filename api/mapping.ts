@@ -110,22 +110,18 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     displayName: 'Bored Ape Solana Club',
     nameInHeader: true,
     stakePoolAddress: new PublicKey(
-      '2AbgA81PK3E5k6n7yfhp3k6jUE1tMXdSGWsCT17uGpUc'
+      '6qfbKwV8Tu1RsUc7R4U6aXPsvRarUm4JhRyuihSueLvH'
     ),
-    websiteUrl: 'https://thesuites.app/',
-    receiptType: ReceiptType.Original,
+    websiteUrl: 'https://bascdao.net/',
+    receiptType: ReceiptType.Receipt,
     tokenStandard: TokenStandard.NonFungible,
     imageUrl:
       '/logos/basc_logo.png',
-    maxStaked: 4932,
+    maxStaked: 6002,
     links: [
       {
-        text: 'Twitter',
-        value: 'https://twitter.com/TheSuitesNFT',
-      },
-      {
-        text: 'Discord',
-        value: 'https://discord.gg/zhzYGxtx9D',
+        text: 'Buy',
+        value: 'https://magiceden.io/creators/basc',
       },
     ],
     colors: {
@@ -140,13 +136,19 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     displayName: 'Abducted BASC',
     nameInHeader: true,
     stakePoolAddress: new PublicKey(
-      '9muf4BWmQntjgsU3wx5cxqiZoXqRaCMxyEH7Gx8J1erG'
+      'A3fzMcAvbU4sPfXJfahyjdt3fA5UrvxQZ1VYt32jodrD'
     ),
-    websiteUrl: '/logos/abducted.png',
+    websiteUrl: 'https://bascdao.net/',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
     imageUrl: '/logos/abducted.png',
-    maxStaked: 4096,
+    maxStaked: 1111,
+    links: [
+      {
+        text: 'Buy',
+        value: 'https://magiceden.io/creators/basc',
+      },
+    ],
     backgroundImage:
       'https://firebasestorage.googleapis.com/v0/b/nft-anybodies.appspot.com/o/images%2F5Cyon.gif-1659579607552?alt=media&token=cd90dcf8-5fe2-4b99-a5d1-9dfb94301fee',
     colors: {
@@ -162,17 +164,18 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'BASCxAI',
     displayName: 'BASC x AI DEGENS',
     stakePoolAddress: new PublicKey(
-      'FP9BRAohGJDximSTa9HR3UNCd9KA5QUApyctMpASrsJp'
+      '3NEDUE4qM2cfMJ3FEkuH4XSuRjfQJv3Fx2nEXw8DHKu4'
     ),
-    websiteUrl: 'https://metaopsgaming.com/',
+    websiteUrl: 'https://bascdao.net/',
     receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
     imageUrl:
       '/logos/AI.png',
-    maxStaked: 5555,
+    maxStaked: 1111,
     links: [
       {
-        text: "Founder's Passes",
-        value: '/meta-ops-founders-vault',
+        text: 'Buy',
+        value: 'https://magiceden.io/creators/basc',
       },
     ],
     colors: {
@@ -186,11 +189,12 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'BASCxSENSHI',
     displayName: 'BASC X SENSHI',
     stakePoolAddress: new PublicKey(
-      '8YMcgMZFCFNmGzBNh2458T5CX5Q4SJX3H9zojJQT8G6N'
+      '2bg1xs3SA6tYTCf1CgrJdeh8cf4o9MExUhvQ4xrDBN5Q'
     ),
-    websiteUrl: 'https://honey.land/',
-    receiptType: ReceiptType.Receipt,
-    maxStaked: 5525,
+    websiteUrl: 'https://bascdao.net/',
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    maxStaked: 1111,
     imageUrl: '/logos/bascxsenshi_logo.png',
     colors: {
       primary: '#4c0f00',
@@ -200,8 +204,8 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
     links: [
       {
-        text: 'View',
-        value: 'https://incubate.honey.land/',
+        text: 'Buy',
+        value: 'https://magiceden.io/creators/basc',
       },
     ],
   },

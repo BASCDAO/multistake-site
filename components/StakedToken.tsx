@@ -78,7 +78,7 @@ export const StakedToken = ({
           selectUnstakedToken={() => {}}
           selectStakedToken={select}
         />
-        <div className="aspect-square w-full grow overflow-hidden rounded-t-xl">
+        <div className="aspect-square w-full grow overflow-hidden rounded-xl">
           {mintMetadata.isFetched &&
           getImageFromTokenData(tk, mintMetadata.data) ? (
             <img
@@ -89,10 +89,11 @@ export const StakedToken = ({
             />
           ) : (
             <div
-              className={`w-full grow animate-pulse rounded-t-xl bg-white bg-opacity-5 `}
+              className={`w-full grow animate-pulse rounded-xl bg-white bg-opacity-5 `}
             />
           )}
         </div>
+{/**
         <div
           className={`flex-col rounded-b-xl p-2 ${
             stakePoolMetadata?.colors?.fontColor
@@ -112,6 +113,7 @@ export const StakedToken = ({
           </div>
           <StakedStats tokenData={tk} />
         </div>
+*/}
         {selected && (
           <div
             className={`absolute top-2 left-2`}
