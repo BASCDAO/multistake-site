@@ -108,6 +108,8 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'BASC',
     displayName: 'Bored Ape Solana Club',
+    description:
+      'Stake your Apes to earn $BONK. You can stake and unstake at any time.',
     nameInHeader: true,
     stakePoolAddress: new PublicKey(
       '6qfbKwV8Tu1RsUc7R4U6aXPsvRarUm4JhRyuihSueLvH'
@@ -134,6 +136,8 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'ABDUCTEDxBASC',
     displayName: 'Abducted BASC',
+    description:
+    'Secure your Abducted Apes in the Vault. Currently no rewards distributed.',
     nameInHeader: true,
     stakePoolAddress: new PublicKey(
       'A3fzMcAvbU4sPfXJfahyjdt3fA5UrvxQZ1VYt32jodrD'
@@ -161,6 +165,8 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'BASCxAI',
     displayName: 'BASC x AI DEGENS',
+    description:
+    'Secure your AI Apes in the Vault. Currently no rewards distributed.',
     stakePoolAddress: new PublicKey(
       '3NEDUE4qM2cfMJ3FEkuH4XSuRjfQJv3Fx2nEXw8DHKu4'
     ),
@@ -186,6 +192,8 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'BASCxSENSHI',
     displayName: 'BASC X SENSHI',
+    description:
+    'Secure your Senshi Apes in the Vault. Currently no rewards distributed.',
     stakePoolAddress: new PublicKey(
       '2bg1xs3SA6tYTCf1CgrJdeh8cf4o9MExUhvQ4xrDBN5Q'
     ),
@@ -206,5 +214,5 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
         value: 'https://magiceden.io/creators/basc',
       },
     ],
-  },  
+  },
 ]
