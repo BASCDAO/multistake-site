@@ -21,8 +21,8 @@ export const MainHero = () => {
       <div className="flex flex-wrap justify-between gap-10 px-8 py-24 md:px-16">
         <div className="flex flex-col gap-2">
           <HeadingPrimary className="mb-2">Bored Ape Solana Club Vault</HeadingPrimary>
-          <div className="text-lg text-medium-3">
-            Stake your NFTs to keep them safe!
+          <div className="text-lg text-white">
+            Stake your Apes to keep them safe!
             <br />
             
           </div>
