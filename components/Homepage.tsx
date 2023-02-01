@@ -19,12 +19,12 @@ function Homepage() {
       }
       }>
       <Head>
-        <title>Ape Staking UI</title>
-        <meta name="description" content="Cardinal Staking UI" />
+        <title>BASC Staking UI</title>
+        <meta name="description" content="BASC Staking UI" />
         <link rel="icon" href={'/favicon.ico'} />
         <script
           defer
-          data-domain="stake.cardinal.so"
+          data-domain="stake.bascdao.net"
           src="https://plausible.io/js/plausible.js"
         ></script>
       </Head>
@@ -38,7 +38,7 @@ function Homepage() {
           )}
         />
       </div>
-      {/**<FooterSlim />*/}
+      <FooterSlim />
     </div>
   )
 }

@@ -90,7 +90,7 @@ function StakePoolHome() {
             </div>
           </div>
         </div>
-        {/**<FooterSlim />*/}
+        <FooterSlim />
       </div>
     )
   }
@@ -171,11 +171,11 @@ function StakePoolHome() {
           }[pane]
         }
       </div>
-      {/**!stakePoolMetadata?.hideFooter ? (
+      {!stakePoolMetadata?.hideFooter ? (
         <Footer bgColor={stakePoolMetadata?.colors?.primary} />
       ) : (
         <div className="h-24"></div>
-      )*/}
+      )}
     </div>
   )
 }
