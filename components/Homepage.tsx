@@ -15,7 +15,8 @@ function Homepage() {
         backgroundImage:"url('https://dazing.bascdao.net/images/background.jpeg')",
         backgroundRepeat: 'no-repeat',
         backgroundPositionX: 'center',
-        backgroundSize: 'cover'
+        backgroundSize: 'cover',
+        boxShadow: 'inset 0 0 0 1000px rgb(0 0 0 / 40%)'
       }
       }>
       <Head>
