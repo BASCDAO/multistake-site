@@ -109,7 +109,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'BASC',
     displayName: 'Bored Ape Solana Club',
     description:
-      'Stake your Apes to earn $BONK. You can stake and unstake at any time.',
+      'Stake your Apes to earn $BONK.',
     nameInHeader: true,
     stakePoolAddress: new PublicKey(
       '6qfbKwV8Tu1RsUc7R4U6aXPsvRarUm4JhRyuihSueLvH'
