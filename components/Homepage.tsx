@@ -10,7 +10,14 @@ function Homepage() {
   const allStakePools = useAllStakePools()
 
   return (
-    <div className="bg-dark-5">
+    <div className="bg-dark-5" style={
+      {
+        backgroundImage:"url('https://dazing.bascdao.net/images/background.jpeg')",
+        backgroundRepeat: 'no-repeat',
+        backgroundPositionX: 'center',
+        backgroundSize: 'cover'
+      }
+      }>
       <Head>
         <title>Ape Staking UI</title>
         <meta name="description" content="Cardinal Staking UI" />
