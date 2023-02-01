@@ -20,12 +20,11 @@ export const MainHero = () => {
       <HeaderSlim />
       <div className="flex flex-wrap justify-between gap-10 px-8 py-24 md:px-16">
         <div className="flex flex-col gap-2">
-          <HeadingPrimary className="mb-2">BASC Staking</HeadingPrimary>
+          <HeadingPrimary className="mb-2">Bored Ape Solana Club Collections</HeadingPrimary>
           <div className="text-lg text-medium-3">
-            Lock your NFTs or tokens to earn rewards from various reward
-            mechanisms including
+            Lock your NFTs to keep them safe!
             <br />
-            tokens, merchandise, redeemable rewards, referral tokens and more.
+            The BASC OG collection can earn $BONK.
           </div>
         </div>
         <div className="flex flex-col items-end justify-end gap-5 ">
