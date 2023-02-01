@@ -149,8 +149,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
         value: 'https://magiceden.io/creators/basc',
       },
     ],
-    backgroundImage:
-      'https://firebasestorage.googleapis.com/v0/b/nft-anybodies.appspot.com/o/images%2F5Cyon.gif-1659579607552?alt=media&token=cd90dcf8-5fe2-4b99-a5d1-9dfb94301fee',
     colors: {
       primary: '#000000',
       secondary: '#37b24a',
