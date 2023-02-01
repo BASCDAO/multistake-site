@@ -22,9 +22,9 @@ export const MainHero = () => {
         <div className="flex flex-col gap-2">
           <HeadingPrimary className="mb-2">Bored Ape Solana Club Collections</HeadingPrimary>
           <div className="text-lg text-medium-3">
-            Lock your NFTs to keep them safe!
+            Stake your NFTs to keep them safe!
             <br />
-            The BASC OG collection can earn $BONK.
+            
           </div>
         </div>
         <div className="flex flex-col items-end justify-end gap-5 ">
