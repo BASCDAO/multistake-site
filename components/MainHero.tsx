@@ -43,6 +43,7 @@ export const MainHero = () => {
             </ButtonPrimary>
           </div>
           */}
+          {/** 
           <div className="flex w-fit flex-wrap gap-3 rounded-xl border-[2px] border-border p-4">
             {statsNameMapping.map(({ displayName, key }) => (
               <div className="flex items-center gap-2" key={key}>
@@ -57,6 +58,7 @@ export const MainHero = () => {
               </div>
             ))}
           </div>
+          */}
         </div>
       </div>
     </div>
