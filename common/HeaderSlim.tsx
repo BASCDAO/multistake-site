@@ -34,7 +34,7 @@ export const HeaderSlim = () => {
               router.push(`/${location.search}`)
             }}
           >
-            <LogoTitled className="inline-block h-6" />
+            {/** <LogoTitled className="inline-block h-6" /> */}
           </div>
           {environment.label !== 'mainnet-beta' && (
             <div className="text-primary">{environment.label}</div>
