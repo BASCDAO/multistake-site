@@ -6,9 +6,10 @@ import type { StakePool } from 'hooks/useAllStakePools'
 import {
   compareStakePools,
   percentStaked,
-  poolId,
-  useStakePoolEntryCounts,
-} from 'hooks/useStakePoolEntryCounts'
+  totalStaked,
+  useAllStakePools,
+} from 'hooks/useAllStakePools'
+import { isStakePoolV2 } from 'hooks/useStakePoolData'
 import { useRouter } from 'next/router'
 import { transparentize } from 'polished'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
@@ -16,7 +17,8 @@ import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
   const router = useRouter()
   const { environment } = useEnvironmentCtx()
-  const stakePoolEntryCounts = useStakePoolEntryCounts()
+
+  const stakePools = useAllStakePools()
   return (
     <div className="grid grid-cols-1 flex-wrap gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {!configs ? (
@@ -25,17 +27,16 @@ export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
           <Card skeleton header={<></>} />
           <Card skeleton header={<></>} />
           <Card skeleton header={<></>} />
-          <Card skeleton header={<></>} />
-          <Card skeleton header={<></>} />
-        </>
+          </>
       ) : (
         [...configs]
-          .sort((a, b) =>
-            compareStakePools(a, b, stakePoolEntryCounts.data ?? {})
-          )
+          .sort((a, b) => compareStakePools(a, b))
           .map((config) => (
             <Card
-              key={config.stakePoolMetadata?.displayName}
+              key={
+                config.stakePoolData.pubkey.toString() ||
+                config.stakePoolMetadata?.name
+              }
               className="cursor-pointer transition-colors"
               css={css`
                 &:hover {
@@ -91,7 +92,7 @@ export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
                     {config.stakePoolMetadata?.displayName ??
                       shortPubKey(config.stakePoolData.pubkey)}
                   </div>
-                  {!stakePoolEntryCounts.isFetched ? (
+                  {!stakePools.isFetched ? (
                     <Stats
                       stats={[
                         {
@@ -102,25 +103,18 @@ export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
                         },
                       ]}
                     />
-                  ) : stakePoolEntryCounts.data &&
-                    stakePoolEntryCounts.data[poolId(config)] &&
+                  ) : config.stakePoolData &&
+                    config.stakePoolData &&
                     !!config.stakePoolMetadata?.maxStaked ? (
                     <Stats
                       stats={[
                         {
                           header: 'Total Staked',
-                          value: (
-                            stakePoolEntryCounts.data[poolId(config)] ?? 0
-                          ).toLocaleString(),
+                          value: totalStaked(config).toLocaleString(),
                         },
                         {
                           header: 'Percent Staked',
-                          value: (
-                            percentStaked(
-                              config.stakePoolMetadata,
-                              stakePoolEntryCounts.data
-                            ) ?? 0
-                          ).toFixed(2),
+                          value: (percentStaked(config) ?? 0).toFixed(2),
                         },
                       ]}
                     />
@@ -129,15 +123,25 @@ export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
                       stats={[
                         {
                           header: 'Total Staked',
-                          value: (
-                            (stakePoolEntryCounts.data ?? {})[poolId(config)] ??
-                            0
-                          ).toLocaleString(),
+                          value: totalStaked(config).toLocaleString(),
                         },
                       ]}
                     />
                   )}
                 </div>
+              }
+              content={
+                <>
+                  {config.stakePoolData?.parsed && (
+                    <div className="flex justify-end text-xs text-gray-400">
+                      <div className="overflow-hidden text-ellipsis whitespace-nowrap">
+                        {isStakePoolV2(config.stakePoolData?.parsed)
+                          ? 'V2'
+                          : 'V1'}
+                      </div>
+                    </div>
+                  )}
+                </>
               }
             />
           ))
