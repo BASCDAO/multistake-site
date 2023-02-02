@@ -115,7 +115,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       '6qfbKwV8Tu1RsUc7R4U6aXPsvRarUm4JhRyuihSueLvH'
     ),
     websiteUrl: 'https://bascdao.net/',
-    receiptType: ReceiptType.Receipt,
+    receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
     imageUrl:
       '/logos/basc_logo.png',
