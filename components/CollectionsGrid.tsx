@@ -136,7 +136,7 @@ export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
                     <div className="flex justify-end text-xs text-gray-400">
                       <div className="overflow-hidden text-ellipsis whitespace-nowrap">
                         {isStakePoolV2(config.stakePoolData?.parsed)
-                          ? 'V2'
+                          ? ''
                           : 'V1'}
                       </div>
                     </div>

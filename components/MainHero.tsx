@@ -22,7 +22,7 @@ export const MainHero = () => {
         <div className="flex flex-col gap-2">
           <HeadingPrimary className="mb-2">Bored Ape Solana Club Vault</HeadingPrimary>
           <div className="text-lg text-white">
-            Stake your Apes to keep them safe!
+            Stake your Apes (and friends) to keep them safe!
             <br />
             
           </div>

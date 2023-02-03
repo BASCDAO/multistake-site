@@ -215,4 +215,88 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       },
     ],
   },
+  {
+    name: 'AngryArmadillos',
+    displayName: 'Angry Armadillos',
+    description:
+    'Secure your Angry Dillos in the Vault. Currently no rewards distributed.',
+    stakePoolAddress: new PublicKey(
+      '4fyk1sftrmEH4ZuR8B6LxPqiMaCTxEpFEt7M7ZyMZjwi'
+    ),
+    websiteUrl: 'https://bascdao.net/',
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    maxStaked: 3333,
+    imageUrl: '/logos/AngryDillo.png',
+    colors: {
+      primary: '#0d1718',
+      secondary: '#416460',
+      accent: '#0089C1',
+      fontColor: '#FFFFFF',
+    },
+    links: [
+      {
+        text: 'Buy',
+        value: 'https://magiceden.io/marketplace/angry_armadillos',
+      },
+    ],
+  },
+  {
+    name: 'DoomedArmadillos',
+    displayName: 'Doomed Armadillos',
+    description:
+    'Secure your Doomed Dillos in the Vault. Currently no rewards distributed.',
+    stakePoolAddress: new PublicKey(
+      '2HAXVu6KsgTzWxgKXXnEs7g8NKDarvXSQfYtG9cJa2uT'
+    ),
+    websiteUrl: 'https://bascdao.net/',
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    maxStaked: 2261,
+    imageUrl: '/logos/DoomedDillo.png',
+    colors: {
+      primary: '#000000',
+      secondary: '#4da1de',
+      accent: '#30c2b9',
+      fontColor: '#FFFFFF',
+    },
+    links: [
+      {
+        text: 'Buy',
+        value: 'https://magiceden.io/marketplace/doomed_armadillos',
+      },
+    ],
+  },
+  {
+    name: 'OtherWorld',
+    displayName: 'Other World',
+    description:
+    'Secure your Aliens in the Vault. Currently no rewards distributed.',
+    stakePoolAddress: new PublicKey(
+      'BRCNkzDJUeQEWV4hEwt4dX8qhMd4WYNonufwSYxbE91d'
+    ),
+    websiteUrl: 'https://bascdao.net/',
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    maxStaked: 4444,
+    imageUrl: '/logos/Otherworld.png',
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+    },
+    colors: {
+      primary: '#1A1A1D',
+      secondary: '#C3073F',
+      accent: '#6F2232',
+      fontColor: '#FFFFFF',
+      fontColorSecondary: '#FFFFFF',
+      backgroundSecondary: '#4E4E50',
+    },
+    links: [
+      {
+        text: 'Buy',
+        value: 'https://magiceden.io/marketplace/other_world',
+      },
+    ],
+  },
 ]
