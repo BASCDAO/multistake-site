@@ -298,5 +298,37 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
         value: 'https://magiceden.io/marketplace/other_world',
       },
     ],
-  }
+  },
+  {
+    name: 'Tesmophoria',
+    displayName: 'Tesmophoria',
+    description:
+    'Secure your Tesmophoria in the Vault. Currently no rewards distributed.',
+    stakePoolAddress: new PublicKey(
+      '8wkcymHiJczyJSgL6n56jYvtwQrRfCZrJYi2P4neQyFU'
+    ),
+    websiteUrl: 'https://bascdao.net/',
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    maxStaked: 4444,
+    imageUrl: '/logos/tesmophoria.png',
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+    },
+    colors: {
+      primary: '#1A1A1D',
+      secondary: '#C3073F',
+      accent: '#6F2232',
+      fontColor: '#FFFFFF',
+      fontColorSecondary: '#FFFFFF',
+      backgroundSecondary: '#4E4E50',
+    },
+    links: [
+      {
+        text: 'Buy',
+        value: 'https://magiceden.io/marketplace/tesmophoria',
+      },
+    ],
+  }, 
 ]
