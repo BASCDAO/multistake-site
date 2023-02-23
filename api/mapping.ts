@@ -216,44 +216,16 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ],
   },
   {
-<<<<<<< HEAD
-    name: 'Thesmophoria',
-    displayName: 'Thesmophoria',
-    description:
-    'Secure your Thesmophoria in the Vault. Currently no rewards distributed.',
-    nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      '8wkcymHiJczyJSgL6n56jYvtwQrRfCZrJYi2P4neQyFU'
-=======
     name: 'AngryArmadillos',
     displayName: 'Angry Armadillos',
     description:
     'Secure your Angry Dillos in the Vault. Currently no rewards distributed.',
     stakePoolAddress: new PublicKey(
       '4fyk1sftrmEH4ZuR8B6LxPqiMaCTxEpFEt7M7ZyMZjwi'
->>>>>>> 4a876307cc8a4a9c90e862458ed299348472c5e4
     ),
     websiteUrl: 'https://bascdao.net/',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
-<<<<<<< HEAD
-    imageUrl: '/logos/tesmophoria.png',
-    maxStaked: 1111,
-    links: [
-      {
-        text: 'Buy',
-        value: 'https://magiceden.io/marketplace/tesmophoria',
-      },
-    ],
-    colors: {
-      primary: '#000000',
-      secondary: '#37b24a',
-      accent: '#37b24a',
-      fontColor: '#37b24a',
-      fontColorSecondary: '#000000',
-      backgroundSecondary: '#000000',
-    },
-=======
     maxStaked: 3333,
     imageUrl: '/logos/AngryDillo.png',
     colors: {
@@ -326,6 +298,5 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
         value: 'https://magiceden.io/marketplace/other_world',
       },
     ],
->>>>>>> 4a876307cc8a4a9c90e862458ed299348472c5e4
-  },
+  }
 ]
