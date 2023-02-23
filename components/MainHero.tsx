@@ -14,7 +14,8 @@ import { ButtonWidths } from '../types'
 
 export const MainHero = () => {
   const { environment } = useEnvironmentCtx()
-  const stats = useGlobalStats()
+  const allStakePools = useAllStakePools()
+  const totalStakedTokens = useStat('total-active-staked-tokens')
   const router = useRouter()
   return (
     <div className="relative z-0 text-sm">
