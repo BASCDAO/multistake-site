@@ -12,7 +12,7 @@ function Homepage() {
   return (
     <div className="bg-dark-5" style={
       {
-        backgroundImage:"url('https://dazing.bascdao.net/images/background.jpeg')",
+        backgroundImage:"url('https://basc.s3.amazonaws.com/img/basc_stake.png')",
         backgroundRepeat: 'no-repeat',
         backgroundPositionX: 'center',
         backgroundSize: 'cover',
