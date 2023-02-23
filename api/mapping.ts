@@ -108,9 +108,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     description:
       'Stake your Apes to earn $BONK.',
     nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      '6qfbKwV8Tu1RsUc7R4U6aXPsvRarUm4JhRyuihSueLvH'
-    ),
+    stakePoolAddress: '6qfbKwV8Tu1RsUc7R4U6aXPsvRarUm4JhRyuihSueLvH',
     websiteUrl: 'https://bascdao.net/',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
@@ -136,9 +134,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     description:
     'Secure your Abducted Apes in the Vault. Currently no rewards distributed.',
     nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      'A3fzMcAvbU4sPfXJfahyjdt3fA5UrvxQZ1VYt32jodrD'
-    ),
+    stakePoolAddress: 'A3fzMcAvbU4sPfXJfahyjdt3fA5UrvxQZ1VYt32jodrD',
     websiteUrl: 'https://bascdao.net/',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
@@ -164,9 +160,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     displayName: 'BASC x AI DEGENS',
     description:
     'Secure your AI Apes in the Vault. Currently no rewards distributed.',
-    stakePoolAddress: new PublicKey(
-      '3NEDUE4qM2cfMJ3FEkuH4XSuRjfQJv3Fx2nEXw8DHKu4'
-    ),
+    stakePoolAddress: '3NEDUE4qM2cfMJ3FEkuH4XSuRjfQJv3Fx2nEXw8DHKu4',
     websiteUrl: 'https://bascdao.net/',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
@@ -191,9 +185,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     displayName: 'BASC X SENSHI',
     description:
     'Secure your Senshi Apes in the Vault. Currently no rewards distributed.',
-    stakePoolAddress: new PublicKey(
-      '2bg1xs3SA6tYTCf1CgrJdeh8cf4o9MExUhvQ4xrDBN5Q'
-    ),
+    stakePoolAddress: '2bg1xs3SA6tYTCf1CgrJdeh8cf4o9MExUhvQ4xrDBN5Q',
     websiteUrl: 'https://bascdao.net/',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
@@ -217,9 +209,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     displayName: 'Angry Armadillos',
     description:
     'Secure your Angry Dillos in the Vault. Currently no rewards distributed.',
-    stakePoolAddress: new PublicKey(
-      '4fyk1sftrmEH4ZuR8B6LxPqiMaCTxEpFEt7M7ZyMZjwi'
-    ),
+    stakePoolAddress: '4fyk1sftrmEH4ZuR8B6LxPqiMaCTxEpFEt7M7ZyMZjwi',
     websiteUrl: 'https://bascdao.net/',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
@@ -243,9 +233,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     displayName: 'Doomed Armadillos',
     description:
     'Secure your Doomed Dillos in the Vault. Currently no rewards distributed.',
-    stakePoolAddress: new PublicKey(
-      '2HAXVu6KsgTzWxgKXXnEs7g8NKDarvXSQfYtG9cJa2uT'
-    ),
+    stakePoolAddress: '2HAXVu6KsgTzWxgKXXnEs7g8NKDarvXSQfYtG9cJa2uT',
     websiteUrl: 'https://bascdao.net/',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
@@ -269,9 +257,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     displayName: 'Other World',
     description:
     'Secure your Aliens in the Vault. Currently no rewards distributed.',
-    stakePoolAddress: new PublicKey(
-      'BRCNkzDJUeQEWV4hEwt4dX8qhMd4WYNonufwSYxbE91d'
-    ),
+    stakePoolAddress: 'BRCNkzDJUeQEWV4hEwt4dX8qhMd4WYNonufwSYxbE91d',
     websiteUrl: 'https://bascdao.net/',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
@@ -301,9 +287,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     displayName: 'Tesmophoria',
     description:
     'Secure your Tesmophoria in the Vault. Currently no rewards distributed.',
-    stakePoolAddress: new PublicKey(
-      '8wkcymHiJczyJSgL6n56jYvtwQrRfCZrJYi2P4neQyFU'
-    ),
+    stakePoolAddress: '8wkcymHiJczyJSgL6n56jYvtwQrRfCZrJYi2P4neQyFU',
     websiteUrl: 'https://bascdao.net/',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
