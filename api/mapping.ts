@@ -215,4 +215,33 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       },
     ],
   },
+  {
+    name: 'Thesmophoria',
+    displayName: 'Thesmophoria',
+    description:
+    'Secure your Thesmophoria in the Vault. Currently no rewards distributed.',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      '8wkcymHiJczyJSgL6n56jYvtwQrRfCZrJYi2P4neQyFU'
+    ),
+    websiteUrl: 'https://bascdao.net/',
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    imageUrl: '/logos/tesmophoria.png',
+    maxStaked: 1111,
+    links: [
+      {
+        text: 'Buy',
+        value: 'https://magiceden.io/marketplace/tesmophoria',
+      },
+    ],
+    colors: {
+      primary: '#000000',
+      secondary: '#37b24a',
+      accent: '#37b24a',
+      fontColor: '#37b24a',
+      fontColorSecondary: '#000000',
+      backgroundSecondary: '#000000',
+    },
+  },
 ]
