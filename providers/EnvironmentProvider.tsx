@@ -23,8 +23,8 @@ export interface EnvironmentContextValues {
 export const ENVIRONMENTS: Environment[] = [
   {
     label: 'mainnet-beta',
-    primary: process.env.MAINNET_PRIMARY || 'https://rpc.ankr.com/solana',
-    secondary: process.env.MAINNET_SECONDARY || 'https://long-empty-moon.solana-mainnet.quiknode.pro/69b0097f09a2712daaf427aec6f45f9e42e1702d/',
+    primary: process.env.MAINNET_PRIMARY || 'https://long-empty-moon.solana-mainnet.quiknode.pro/69b0097f09a2712daaf427aec6f45f9e42e1702d/',
+    secondary: process.env.MAINNET_SECONDARY || 'https://rpc.ankr.com/solana',
   },
   {
     label: 'testnet',
