@@ -46,7 +46,7 @@ export const getInitialProps = async ({
   hostname: string
 }> => {
   const host = ctx.req?.headers.host || ctx.query.host
-  const cluster = host?.includes('dev')
+  const cluster = host?.includes('devy')
     ? 'devnet'
     : (ctx.query.project || ctx.query.host)?.includes('test')
     ? 'testnet'
@@ -66,7 +66,7 @@ export function EnvironmentProvider({
   defaultCluster: string
 }) {
   const { query } = useRouter()
-  const cluster = (query.project || query.host)?.includes('dev')
+  const cluster = (query.project || query.host)?.includes('devy')
     ? 'devnet'
     : query.host?.includes('test')
     ? 'testnet'
