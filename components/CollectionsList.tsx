@@ -10,7 +10,7 @@ import { PercentStaked } from './PercentStaked'
 
 export const CollectionsList = ({ configs }: { configs?: StakePool[] }) => {
   const router = useRouter()
-  const stakePoolEntryCounts = useStakePoolEntryCounts()
+
   return (
     <div className="w-full overflow-x-scroll overflow-y-scroll rounded-xl border border-border p-4">
       <div className="flex w-full min-w-fit flex-col">
@@ -26,10 +26,8 @@ export const CollectionsList = ({ configs }: { configs?: StakePool[] }) => {
             <></>
           ) : (
             [...configs]
-              .sort((a, b) =>
-                compareStakePools(a, b, stakePoolEntryCounts.data ?? {})
-              )
-              .map((config) => (
+            .sort((a, b) => compareStakePools(a, b))
+            .map((config) => (
                 <div
                   key={`${config.stakePoolData.pubkey.toString()}`}
                   className="flex w-full cursor-pointer gap-4 border-b border-border px-8 py-4 md:flex-row"
@@ -88,10 +86,7 @@ export const CollectionsList = ({ configs }: { configs?: StakePool[] }) => {
                       shortPubKey(config.stakePoolData.pubkey.toString())}
                   </div>
                   <div className="flex flex-1 items-center justify-end">
-                    {totalStaked(
-                      config.stakePoolMetadata,
-                      stakePoolEntryCounts.data ?? {}
-                    ) || '-'}
+                  {totalStaked(config) || '-'}
                   </div>
                   <div className="flex flex-1 items-center justify-end">
                     <PercentStaked stakePool={config} />
