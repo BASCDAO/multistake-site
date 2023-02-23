@@ -1,43 +1,37 @@
+import type { UseQueryResult } from '@tanstack/react-query'
 import type { StakePoolMetadata } from 'api/mapping'
-import { queryClient } from 'pages/_app'
-import React, { useContext, useState } from 'react'
+import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import React, { useContext } from 'react'
 
 export interface StakePoolMetadataValues {
-  stakePoolMetadata: StakePoolMetadata | null
-  setStakePoolMetadata: (stakePoolMetadata: StakePoolMetadata | null) => void
+  stakePoolMetadata: UseQueryResult<StakePoolMetadata | undefined | null>
 }
 
-const EnvironmentContext: React.Context<null | StakePoolMetadataValues> =
+const StakePoolMetadataContext: React.Context<null | StakePoolMetadataValues> =
   React.createContext<null | StakePoolMetadataValues>(null)
 
 export function StakePoolMetadataProvider({
   children,
-  poolMapping,
+  hostname,
 }: {
   children: React.ReactChild
-  poolMapping: StakePoolMetadata | undefined
+  hostname: string
 }) {
-  const [stakePoolMetadata, setStakePoolMetadata] =
-    useState<StakePoolMetadata | null>(poolMapping || null)
+  const stakePoolMetadata = useStakePoolMetadata(hostname)
 
   return (
-    <EnvironmentContext.Provider
-      value={{
-        stakePoolMetadata,
-        setStakePoolMetadata: (x) => {
-          queryClient.removeQueries(), setStakePoolMetadata(x)
-        },
-      }}
-    >
+    <StakePoolMetadataContext.Provider value={{ stakePoolMetadata }}>
       {children}
-    </EnvironmentContext.Provider>
+    </StakePoolMetadataContext.Provider>
   )
 }
 
-export function useStakePoolMetadataCtx(): StakePoolMetadataValues {
-  const context = useContext(EnvironmentContext)
+export function useStakePoolMetadataCtx(): UseQueryResult<
+  StakePoolMetadata | undefined | null
+> {
+  const context = useContext(StakePoolMetadataContext)
   if (!context) {
     throw new Error('Missing stakePoolMetadata context')
   }
-  return context
+  return context.stakePoolMetadata
 }

@@ -5,7 +5,10 @@ import { GlyphWallet } from 'assets/GlyphWallet'
 import { LogoTitled } from 'assets/LogoTitled'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { useModal } from 'providers/ModalProvider'
 import { useEffect, useState } from 'react'
+
+import { useTermsOfServiceModal } from '@/components/modals/TermsOfService'
 
 import { Airdrop } from './Airdrop'
 import { ButtonSmall } from './ButtonSmall'

@@ -19,7 +19,7 @@ import type {
 import { PublicKey } from '@solana/web3.js'
 import { REWARD_QUERY_KEY } from 'handlers/useHandleClaimRewards'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import { isStakePoolV2, useStakePoolData } from './useStakePoolData'
 
@@ -37,7 +37,7 @@ export const useRewardDistributorData = () => {
     async () => {
       if (!stakePoolData?.pubkey || !stakePoolData?.parsed) return
       if (!isStakePoolV2(stakePoolData.parsed)) {
-        const [rewardDistributorId] = await findRewardDistributorId(
+        const rewardDistributorId = findRewardDistributorId(
           stakePoolData.pubkey
         )
         const rewardDistributorData = await getRewardDistributor(

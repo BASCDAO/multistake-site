@@ -1,15 +1,17 @@
 import { pubKeyUrl, shortPubKey } from '@cardinal/common'
+import { LinkIcon } from '@heroicons/react/24/outline'
 import type { PublicKey } from '@solana/web3.js'
 import { TabSelector } from 'common/TabSelector'
+import { withCluster } from 'common/utils'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
-import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolId } from 'hooks/useStakePoolId'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import Image from 'next/image'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 import { useState } from 'react'
 
-import { StakePoolBalance } from '@/components/admin/StakePoolBalance'
+import { AdvancedConfigForm } from '@/components/admin/AdvancedConfigForm'
 
 import { AuthorizeMints } from '../AuthorizeMints'
 import { MintMultiplierLookup } from '../MintMultiplierLookup'
@@ -17,11 +19,10 @@ import { MintMultipliers } from '../MintMultipliers'
 import { StakePoolImage } from '../StakePoolImage'
 import { ReclaimFunds } from './ReclaimFunds'
 import { RewardDistributorUpdate } from './RewardDistributorUpdate'
+import { Snapshot } from './Snapshot'
+import { StakePoolBalance } from './StakePoolBalance'
 import { StakePoolUpdate } from './StakePoolUpdate'
 import { TransferFunds } from './TransferFunds'
-import Image from 'next/image'
-import { LinkIcon } from '@heroicons/react/24/outline'
-import { withCluster } from 'common/utils'
 
 export type PANE_OPTIONS =
   | 'stake-pool'
@@ -29,6 +30,8 @@ export type PANE_OPTIONS =
   | 'reward-distributor'
   | 'reward-multipliers'
   | 'reward-funds'
+  | 'snapshot'
+  | 'advanced-config'
 
 export const AdminStakePool = ({
   onSuccess,
@@ -36,9 +39,8 @@ export const AdminStakePool = ({
   onSuccess?: (p: PublicKey | undefined) => void
 }) => {
   const { environment } = useEnvironmentCtx()
-  const { data: config } = useStakePoolMetadata()
-  const stakePoolId = useStakePoolId()
-  const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
+  const { data: config } = useStakePoolMetadataCtx()
+  const { data: stakePoolId } = useStakePoolId()
   const stakePool = useStakePoolData()
   const rewardDistributor = useRewardDistributorData()
   const [pane, setPane] = useState<PANE_OPTIONS>('stake-pool')
@@ -86,6 +88,19 @@ export const AdminStakePool = ({
         ? 'Only applicable for stake pools that have reward distribution'
         : 'Manage reward distributor funds',
     },
+    {
+      label: <div className="flex items-center gap-2">Snapshot</div>,
+      value: 'snapshot',
+      disabled: !stakePool.data,
+      tooltip: !stakePool.data
+        ? `Enabled once pool is created to receive snapshot of staked tokens`
+        : `Tool to get pool's snapshot of staked tokens`,
+    },
+    {
+      label: <div className="flex items-center gap-2">Config</div>,
+      value: 'advanced-config',
+      tooltip: 'Set advanced configuration settings',
+    },
   ]
 
   return (
@@ -110,7 +125,10 @@ export const AdminStakePool = ({
           </a>
           <a
             className="transition hover:text-blue-500"
-            href={withCluster(`/${stakePoolId}`, environment.label)}
+            href={withCluster(
+              `/${config?.name ?? stakePoolId}`,
+              environment.label
+            )}
           >
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-700 outline outline-gray-700 hover:outline-orange-500">
               <LinkIcon className="h-4 w-4 text-gray-400" />
@@ -144,6 +162,16 @@ export const AdminStakePool = ({
               <div className="w-full">
                 <ReclaimFunds />
                 <TransferFunds />
+              </div>
+            ),
+            snapshot: (
+              <div className="w-full">
+                <Snapshot />
+              </div>
+            ),
+            'advanced-config': (
+              <div className="w-full">
+                <AdvancedConfigForm />
               </div>
             ),
           }[pane]

@@ -1,15 +1,14 @@
-import { tryPublicKey } from '@cardinal/common'
+import { executeTransaction, tryPublicKey } from '@cardinal/common'
 import { rewardsCenterProgram } from '@cardinal/rewards-center'
-import { executeTransaction } from '@cardinal/staking'
 import { withUpdateStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/transaction'
 import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { PublicKey } from '@solana/web3.js'
 import { SystemProgram, Transaction } from '@solana/web3.js'
+import { useMutation } from '@tanstack/react-query'
 import { handleError } from 'common/errors'
 import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
-import { useMutation } from 'react-query'
 
 import type { StakePoolUpdateForm } from '@/components/admin/StakePoolUpdate'
 
@@ -80,22 +79,30 @@ export const useHandleStakePoolUpdate = () => {
         /////////////////// V1 ///////////////////
         await withUpdateStakePool(transaction, connection, wallet, {
           stakePoolId: stakePool.data.pubkey,
-          requiresCollections: collectionPublicKeys,
-          requiresCreators: creatorPublicKeys,
-          requiresAuthorization: values.requiresAuthorization,
+          requiresCollections:
+            collectionPublicKeys ?? stakePool.data.parsed.allowedCreators,
+          requiresCreators:
+            creatorPublicKeys ?? stakePool.data.parsed.allowedCollections,
+          requiresAuthorization:
+            values.requiresAuthorization ??
+            stakePool.data.parsed.requiresAuthorization,
           overlayText: '',
           resetOnStake:
             values.resetOnStake ?? stakePool.data.parsed.resetOnUnstake,
-          cooldownSeconds: values.cooldownPeriodSeconds,
-          minStakeSeconds: values.minStakeSeconds,
+          cooldownSeconds:
+            values.cooldownPeriodSeconds ??
+            (stakePool.data.parsed.cooldownSeconds || undefined),
+          minStakeSeconds:
+            values.minStakeSeconds ??
+            (stakePool.data.parsed.minStakeSeconds || undefined),
           endDate: values.endDateSeconds
             ? new BN(values.endDateSeconds)
-            : undefined,
+            : stakePool.data.parsed.endDate || undefined,
           doubleOrResetEnabled: false, // TODO
         })
       }
 
-      return executeTransaction(connection, wallet, transaction, {})
+      return executeTransaction(connection, transaction, wallet, {})
     },
     {
       onSuccess: (txid) => {

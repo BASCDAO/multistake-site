@@ -1,25 +1,19 @@
-import { withCreateMint } from '@cardinal/common'
+import { createMintTx, executeTransaction } from '@cardinal/common'
 import { createInitMintManagerInstruction } from '@cardinal/creator-standard/dist/cjs/generated'
 import {
   findMintManagerId,
   findMintMetadataId,
   findRulesetId,
 } from '@cardinal/creator-standard/dist/cjs/pda'
-import { executeTransaction } from '@cardinal/staking'
-import {
-  CreateMetadataV2,
-  Creator,
-  DataV2,
-  Metadata,
-} from '@metaplex-foundation/mpl-token-metadata'
-import type { Wallet } from '@saberhq/solana-contrib'
+import { createCreateMetadataAccountV3Instruction } from '@metaplex-foundation/mpl-token-metadata'
+import type { Wallet } from '@project-serum/anchor/dist/cjs/provider'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { Connection } from '@solana/web3.js'
-import { Keypair, LAMPORTS_PER_SOL, Transaction } from '@solana/web3.js'
+import { Keypair, LAMPORTS_PER_SOL } from '@solana/web3.js'
 import { notify } from 'common/Notification'
 import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 
 import { AsyncButton } from './Button'
 import { asWallet } from './Wallets'
@@ -31,43 +25,46 @@ export async function airdropNFT(
   wallet: Wallet,
   airdropMetadatas: AirdropMetadata[]
 ): Promise<string> {
-  const transaction = new Transaction()
   const randInt = Math.round(Math.random() * (airdropMetadatas.length - 1))
   const metadata: AirdropMetadata | undefined = airdropMetadatas[randInt]
   if (!metadata) throw new Error('No configured airdrops found')
 
   const mintKeypair = Keypair.generate()
-  const [holderTokenAccountId] = await withCreateMint(
-    transaction,
+  const [transaction, holderTokenAccountId] = await createMintTx(
     connection,
-    wallet,
-    wallet.publicKey,
-    mintKeypair.publicKey
+    mintKeypair.publicKey,
+    wallet.publicKey
   )
 
-  const masterEditionMetadataId = await Metadata.getPDA(mintKeypair.publicKey)
-  const metadataTx = new CreateMetadataV2(
-    { feePayer: wallet.publicKey },
+  const masterEditionMetadataId = findMintMetadataId(mintKeypair.publicKey)
+  const metadataIx = createCreateMetadataAccountV3Instruction(
     {
       metadata: masterEditionMetadataId,
-      metadataData: new DataV2({
-        name: metadata.name,
-        symbol: metadata.symbol,
-        uri: metadata.uri,
-        sellerFeeBasisPoints: 10,
-        creators: [
-          new Creator({
-            address: wallet.publicKey.toString(),
-            verified: false,
-            share: 100,
-          }),
-        ],
-        collection: null,
-        uses: null,
-      }),
       updateAuthority: wallet.publicKey,
       mint: mintKeypair.publicKey,
       mintAuthority: wallet.publicKey,
+      payer: wallet.publicKey,
+    },
+    {
+      createMetadataAccountArgsV3: {
+        data: {
+          name: metadata.name,
+          symbol: metadata.symbol,
+          uri: metadata.uri,
+          sellerFeeBasisPoints: 10,
+          creators: [
+            {
+              address: wallet.publicKey,
+              verified: false,
+              share: 100,
+            },
+          ],
+          collection: null,
+          uses: null,
+        },
+        collectionDetails: null,
+        isMutable: true,
+      },
     }
   )
 
@@ -89,12 +86,11 @@ export async function airdropNFT(
 
   transaction.instructions = [
     ...transaction.instructions,
-    ...metadataTx.instructions,
+    metadataIx,
     initMintManagerIx,
   ]
 
-  const txid = await executeTransaction(connection, wallet, transaction, {
-    confirmOptions: { commitment: 'confirmed' },
+  const txid = await executeTransaction(connection, transaction, wallet, {
     signers: [mintKeypair],
   })
   console.log(
@@ -107,7 +103,7 @@ export const Airdrop = () => {
   const { connection } = useEnvironmentCtx()
   const wallet = useWallet()
   const allowedTokenDatas = useAllowedTokenDatas(true)
-  const { data: stakePoolMetadata } = useStakePoolMetadata()
+  const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
 
   return (
     <AsyncButton

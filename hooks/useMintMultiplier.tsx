@@ -11,7 +11,7 @@ import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/st
 import type { PublicKey } from '@solana/web3.js'
 import { notify } from 'common/Notification'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import {
   isRewardDistributorV2,
@@ -21,7 +21,7 @@ import { useStakePoolId } from './useStakePoolId'
 import { useWalletId } from './useWalletId'
 
 export const useMintMultiplier = (mint: string) => {
-  const stakePoolId = useStakePoolId()
+  const { data: stakePoolId } = useStakePoolId()
   const walletId = useWalletId()
   const rewardDistributor = useRewardDistributorData()
   const { connection } = useEnvironmentCtx()
@@ -60,18 +60,16 @@ export const useMintMultiplier = (mint: string) => {
         )
       } else {
         try {
-          stakeEntryId = (
-            await findStakeEntryIdFromMint(
-              connection,
-              walletId,
-              stakePoolId,
-              mintId
-            )
-          )[0]
+          stakeEntryId = await findStakeEntryIdFromMint(
+            connection,
+            walletId,
+            stakePoolId,
+            mintId
+          )
         } catch (e) {
           throw 'Invalid mint ID or no reward entry for mint'
         }
-        const [rewardEntryId] = await findRewardEntryId(
+        const rewardEntryId = findRewardEntryId(
           rewardDistributor.data.pubkey,
           stakeEntryId
         )

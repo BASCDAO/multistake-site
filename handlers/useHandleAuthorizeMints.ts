@@ -1,14 +1,14 @@
+import { executeTransaction } from '@cardinal/common'
 import {
   findStakeAuthorizationRecordId,
   rewardsCenterProgram,
 } from '@cardinal/rewards-center'
-import { executeTransaction } from '@cardinal/staking'
 import { withAuthorizeStakeEntry } from '@cardinal/staking/dist/cjs/programs/stakePool/transaction'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey, SystemProgram, Transaction } from '@solana/web3.js'
+import { useMutation } from '@tanstack/react-query'
 import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
-import { useMutation } from 'react-query'
 
 import { isStakePoolV2, useStakePoolData } from '../hooks/useStakePoolData'
 import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
@@ -70,9 +70,8 @@ export const useHandleAuthorizeMints = () => {
           )
         }
 
-        await executeTransaction(connection, wallet, transaction, {
+        await executeTransaction(connection, transaction, wallet, {
           silent: false,
-          signers: [],
         })
         notify({
           message: `Successfully authorized ${i + 1}/${

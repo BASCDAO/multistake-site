@@ -1,4 +1,7 @@
-import { getBatchedMultipleAccounts } from '@cardinal/common'
+import {
+  findMintMetadataId,
+  getBatchedMultipleAccounts,
+} from '@cardinal/common'
 import type { IdlAccountData } from '@cardinal/rewards-center'
 import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
 import { useWallet } from '@solana/wallet-adapter-react'
@@ -6,7 +9,7 @@ import type { Connection, PublicKey } from '@solana/web3.js'
 import { fetchStakeEntriesForUser } from 'api/fetchStakeEntry'
 import { asWallet } from 'common/Wallets'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import * as useAllowedTokenDatas from './useAllowedTokenDatas'
 import { useStakePoolData } from './useStakePoolData'
@@ -16,7 +19,7 @@ import { useWalletIds } from './useWalletIds'
 
 export type StakeEntryTokenData = {
   tokenListData?: TokenListData
-  metaplexData?: { pubkey: PublicKey; data: metaplex.MetadataData } | null
+  metaplexData?: { pubkey: PublicKey; data: metaplex.Metadata } | null
   stakeEntry:
     | Pick<IdlAccountData<'stakeEntry'>, 'pubkey' | 'parsed'>
     | null
@@ -35,15 +38,8 @@ export async function getStakeEntryDatas(
     (entry) => entry.parsed?.pool.toString() === stakePoolData.pubkey.toString()
   )
 
-  const metaplexIds = await Promise.all(
-    stakeEntries.map(
-      async (stakeEntry) =>
-        (
-          await metaplex.MetadataProgram.findMetadataAccount(
-            stakeEntry.parsed!.stakeMint
-          )
-        )[0]
-    )
+  const metaplexIds = stakeEntries.map((stakeEntry) =>
+    findMintMetadataId(stakeEntry.parsed!.stakeMint)
   )
   const metaplexAccountInfos = await getBatchedMultipleAccounts(
     connection,
@@ -52,12 +48,12 @@ export async function getStakeEntryDatas(
   const metaplexData = metaplexAccountInfos.reduce(
     (acc, accountInfo, i) => {
       try {
-        acc[stakeEntries[i]!.pubkey.toString()] = {
-          pubkey: metaplexIds[i]!,
-          ...accountInfo,
-          data: metaplex.MetadataData.deserialize(
-            accountInfo?.data as Buffer
-          ) as metaplex.MetadataData,
+        if (accountInfo) {
+          acc[stakeEntries[i]!.pubkey.toString()] = {
+            pubkey: metaplexIds[i]!,
+            ...accountInfo,
+            data: metaplex.Metadata.deserialize(accountInfo?.data)[0],
+          }
         }
       } catch (e) {}
       return acc
@@ -65,7 +61,7 @@ export async function getStakeEntryDatas(
     {} as {
       [stakeEntryId: string]: {
         pubkey: PublicKey
-        data: metaplex.MetadataData
+        data: metaplex.Metadata
       }
     }
   )

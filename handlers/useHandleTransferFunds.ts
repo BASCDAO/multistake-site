@@ -1,13 +1,20 @@
-import { withFindOrInitAssociatedTokenAccount } from '@cardinal/common'
-import { executeTransaction } from '@cardinal/staking'
+import {
+  executeTransaction,
+  withFindOrInitAssociatedTokenAccount,
+  withWrapSol,
+} from '@cardinal/common'
+import {
+  createTransferCheckedInstruction,
+  getAssociatedTokenAddressSync,
+  NATIVE_MINT,
+} from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { Transaction } from '@solana/web3.js'
+import { useMutation } from '@tanstack/react-query'
 import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
-import { useMutation } from 'react-query'
-import { createTransferCheckedInstruction } from 'spl-token-v3'
 
 import { useStakePoolData } from '../hooks/useStakePoolData'
 import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
@@ -33,11 +40,14 @@ export const useHandleTransferFunds = () => {
       if (!transferAmount) throw 'Transfer amount missing'
 
       const transaction = new Transaction()
-      const ownerAtaId = await withFindOrInitAssociatedTokenAccount(
-        transaction,
-        connection,
+      if (
+        rewardDistributor.data.parsed.rewardMint.toString() ===
+        NATIVE_MINT.toString()
+      ) {
+        await withWrapSol(transaction, connection, wallet, transferAmount)
+      }
+      const ownerAtaId = getAssociatedTokenAddressSync(
         rewardDistributor.data.parsed?.rewardMint,
-        wallet.publicKey,
         wallet.publicKey,
         true
       )
@@ -61,7 +71,7 @@ export const useHandleTransferFunds = () => {
         )
       )
 
-      return executeTransaction(connection, wallet, transaction, {})
+      return executeTransaction(connection, transaction, wallet, {})
     },
     {
       onSuccess: (txid) => {

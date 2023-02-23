@@ -1,15 +1,18 @@
-import { findAta, withFindOrInitAssociatedTokenAccount } from '@cardinal/common'
+import {
+  executeTransaction,
+  findAta,
+  withFindOrInitAssociatedTokenAccount,
+} from '@cardinal/common'
 import { rewardsCenterProgram } from '@cardinal/rewards-center'
-import { executeTransaction } from '@cardinal/staking'
 import { withReclaimFunds } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
 import { BN } from '@project-serum/anchor'
+import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { Transaction } from '@solana/web3.js'
+import { useMutation } from '@tanstack/react-query'
 import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
-import { useMutation } from 'react-query'
-import { TOKEN_PROGRAM_ID } from 'spl-token-v3'
 
 import { isStakePoolV2, useStakePoolData } from '../hooks/useStakePoolData'
 import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
@@ -64,7 +67,7 @@ export const useHandleReclaimFunds = () => {
           amount: new BN(reclaimAmount || 0),
         })
       }
-      return executeTransaction(connection, wallet, transaction, {})
+      return executeTransaction(connection, transaction, wallet, {})
     },
     {
       onSuccess: (txid) => {

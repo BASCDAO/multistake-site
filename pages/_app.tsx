@@ -10,6 +10,7 @@ import {
   BackpackWalletAdapter,
   BraveWalletAdapter,
   CoinbaseWalletAdapter,
+  ExodusWalletAdapter,
   FractalWalletAdapter,
   GlowWalletAdapter,
   LedgerWalletAdapter,
@@ -19,18 +20,18 @@ import {
   SolflareWalletAdapter,
   TorusWalletAdapter,
 } from '@solana/wallet-adapter-wallets'
-import type { StakePoolMetadata } from 'api/mapping'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { ToastContainer } from 'common/Notification'
 import type { AppProps } from 'next/app'
 import {
   EnvironmentProvider,
   getInitialProps,
 } from 'providers/EnvironmentProvider'
+import { ModalProvider } from 'providers/ModalProvider'
 import { StakePoolMetadataProvider } from 'providers/StakePoolMetadataProvider'
 import { UTCNowProvider } from 'providers/UTCNowProvider'
 import { useMemo } from 'react'
-import { QueryClient, QueryClientProvider } from 'react-query'
-import { ReactQueryDevtools } from 'react-query/devtools'
 
 require('@solana/wallet-adapter-react-ui/styles.css')
 
@@ -48,10 +49,10 @@ const App = ({
   Component,
   pageProps,
   cluster,
-  poolMapping,
+  hostname,
 }: AppProps & {
   cluster: string
-  poolMapping: StakePoolMetadata | undefined
+  hostname: string
 }) => {
   const network = useMemo(() => {
     switch (cluster) {
@@ -76,6 +77,7 @@ const App = ({
       new SlopeWalletAdapter(),
       new FractalWalletAdapter(),
       new GlowWalletAdapter({ network }),
+      new ExodusWalletAdapter(),
       new LedgerWalletAdapter(),
       new MathWalletAdapter(),
       new TorusWalletAdapter({ params: { network, showTorusButton: false } }),
@@ -84,23 +86,25 @@ const App = ({
   )
   return (
     <EnvironmentProvider defaultCluster={cluster}>
-      <StakePoolMetadataProvider poolMapping={poolMapping}>
-        <UTCNowProvider>
-          <WalletProvider autoConnect wallets={wallets}>
-            <WalletIdentityProvider>
-              <WalletModalProvider>
-                <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <StakePoolMetadataProvider hostname={hostname}>
+          <UTCNowProvider>
+            <WalletProvider autoConnect wallets={wallets}>
+              <WalletIdentityProvider>
+                <WalletModalProvider>
+                <ModalProvider>
                   <>
                     <ToastContainer />
                     <Component {...pageProps} />
                     <ReactQueryDevtools initialIsOpen={false} />
                   </>
-                </QueryClientProvider>
-              </WalletModalProvider>
-            </WalletIdentityProvider>
-          </WalletProvider>
-        </UTCNowProvider>
-      </StakePoolMetadataProvider>
+                  </ModalProvider>
+                </WalletModalProvider>
+              </WalletIdentityProvider>
+            </WalletProvider>
+          </UTCNowProvider>
+        </StakePoolMetadataProvider>
+      </QueryClientProvider>
     </EnvironmentProvider>
   )
 }

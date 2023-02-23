@@ -1,14 +1,11 @@
 import { shortPubKey } from '@cardinal/common'
 import { css } from '@emotion/react'
 import type { StakePool } from 'hooks/useAllStakePools'
-import {
-  compareStakePools,
-  totalStaked,
-  useStakePoolEntryCounts,
-} from 'hooks/useStakePoolEntryCounts'
+import { compareStakePools, totalStaked } from 'hooks/useAllStakePools'
 import { useRouter } from 'next/router'
 import { transparentize } from 'polished'
 
+import { trySeq } from './CollectionsGrid'
 import { PercentStaked } from './PercentStaked'
 
 export const CollectionsList = ({ configs }: { configs?: StakePool[] }) => {
@@ -40,9 +37,15 @@ export const CollectionsList = ({ configs }: { configs?: StakePool[] }) => {
                   css={css`
                     &:hover {
                       background: ${config.stakePoolMetadata?.colors?.primary &&
+                        !!trySeq(() =>
+                        transparentize(
+                          0.8,
+                          config.stakePoolMetadata?.colors?.primary ?? ''
+                        )
+                      ) &&
                       transparentize(
                         0.8,
-                        config.stakePoolMetadata.colors?.primary
+                        config.stakePoolMetadata?.colors?.primary
                       )};
                     }
                   `}

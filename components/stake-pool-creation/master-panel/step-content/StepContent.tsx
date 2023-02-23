@@ -1,6 +1,6 @@
+import type { Mint } from '@solana/spl-token'
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
-import type { Mint } from 'spl-token-v3'
 
 import { Intro } from '@/components/stake-pool-creation/master-panel/Intro'
 import { AdditionalFeatures } from '@/components/stake-pool-creation/master-panel/step-content/AdditionalFeatures'
@@ -29,7 +29,7 @@ export const StepContent = ({
   activeSlavePanelScreen,
 }: StepContentProps) => {
   return (
-    <div className="h-full">
+    <div className="mx-2 h-full">
       {currentStep === 0 && <Intro />}
       {currentStep === 1 && (
         <Authorization

@@ -2,6 +2,7 @@ import {
   tryGetAccount,
   withFindOrInitAssociatedTokenAccount,
 } from '@cardinal/common'
+import { findMintMetadataId } from '@cardinal/creator-standard/dist/cjs/pda'
 import {
   findRewardEntryId as findRewardEntryIdV2,
   findStakeEntryId,
@@ -18,12 +19,12 @@ import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/st
 import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey, SystemProgram, Transaction } from '@solana/web3.js'
+import { useMutation } from '@tanstack/react-query'
 import { fetchRewardEntry } from 'api/fetchRewardEntry'
 import { fetchStakeEntry } from 'api/fetchStakeEntry'
 import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
-import { useMutation } from 'react-query'
 
 import { isStakePoolV2, useStakePoolData } from '../hooks/useStakePoolData'
 import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
@@ -86,14 +87,12 @@ export const useHandleSetMultipliers = () => {
         const mintId = pubKeysToSetMultiplier[i]!
         const stakeEntryId = isStakePoolV2(stakePoolData.parsed)
           ? findStakeEntryId(stakePoolData.pubkey, mintId, wallet.publicKey)
-          : (
-              await findStakeEntryIdFromMint(
-                connection,
-                wallet.publicKey!,
-                stakePoolData.pubkey,
-                mintId
-              )
-            )[0]
+          : await findStakeEntryIdFromMint(
+              connection,
+              wallet.publicKey!,
+              stakePoolData.pubkey,
+              mintId
+            )
         await withFindOrInitAssociatedTokenAccount(
           transaction,
           connection,
@@ -114,20 +113,23 @@ export const useHandleSetMultipliers = () => {
         )
         if (!stakeEntry) {
           if (isStakePoolV2(stakePoolData.parsed)) {
+            const metadataId = findMintMetadataId(mintId)
             const ix = await program.methods
               .initEntry(wallet.publicKey)
-              .accounts({
+              .accountsStrict({
                 stakeEntry: stakeEntryId,
                 stakePool: stakePoolData.pubkey,
                 stakeMint: mintId,
                 payer: wallet.publicKey,
                 systemProgram: SystemProgram.programId,
+                stakeMintMetadata: metadataId,
               })
               .instruction()
             transaction.add(ix)
           } else {
             await withInitStakeEntry(transaction, connection, wallet, {
               stakePoolId: stakePoolData.pubkey,
+              stakeEntryId: stakeEntryId,
               originalMintId: mintId,
             })
           }
@@ -139,12 +141,7 @@ export const useHandleSetMultipliers = () => {
 
         const rewardEntryId = isStakePoolV2(stakePoolData.parsed)
           ? findRewardEntryIdV2(rewardDistributorData.pubkey, stakeEntryId)
-          : (
-              await findRewardEntryId(
-                rewardDistributorData.pubkey,
-                stakeEntryId
-              )
-            )[0]
+          : findRewardEntryId(rewardDistributorData.pubkey, stakeEntryId)
         const rewardEntry = await tryGetAccount(() =>
           fetchRewardEntry(connection, rewardDistributorData, stakeEntryId)
         )
@@ -152,7 +149,7 @@ export const useHandleSetMultipliers = () => {
           if (isStakePoolV2(stakePoolData.parsed)) {
             const ix = await program.methods
               .initRewardEntry()
-              .accounts({
+              .accountsStrict({
                 rewardEntry: rewardEntryId,
                 stakeEntry: stakeEntryId,
                 rewardDistributor: rewardDistributorData.pubkey,
@@ -176,7 +173,7 @@ export const useHandleSetMultipliers = () => {
         if (isStakePoolV2(stakePoolData.parsed)) {
           const ix = await program.methods
             .updateRewardEntry({ multiplier: new BN(multipliers[i]!) })
-            .accounts({
+            .accountsStrict({
               rewardEntry: rewardEntryId,
               rewardDistributor: rewardDistributorData.pubkey,
               authority: wallet.publicKey,

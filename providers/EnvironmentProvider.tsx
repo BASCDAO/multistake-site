@@ -1,7 +1,5 @@
 import type { Cluster } from '@solana/web3.js'
 import { Connection } from '@solana/web3.js'
-import type { StakePoolMetadata } from 'api/mapping'
-import { stakePoolMetadatas } from 'api/mapping'
 import { firstParam } from 'common/utils'
 import type { NextPageContext } from 'next'
 import { useRouter } from 'next/router'
@@ -45,27 +43,18 @@ export const getInitialProps = async ({
   ctx: NextPageContext
 }): Promise<{
   cluster: string
-  poolMapping: StakePoolMetadata | undefined
+  hostname: string
 }> => {
   const host = ctx.req?.headers.host || ctx.query.host
-  const cluster = host?.includes('devy')
+  const cluster = host?.includes('dev')
     ? 'devnet'
     : (ctx.query.project || ctx.query.host)?.includes('test')
     ? 'testnet'
     : ctx.query.cluster || process.env.BASE_CLUSTER
 
-  const projectParams =
-    ctx.query.pool || ctx.req?.headers.host || ctx.query.host
-
-  const poolMapping = projectParams
-    ? stakePoolMetadatas.find(
-        (config) => config.hostname && projectParams.includes(config.hostname)
-      )
-    : undefined
-
   return {
     cluster: firstParam(cluster),
-    poolMapping: poolMapping,
+    hostname: (ctx.req?.headers.host || ctx.query.host)?.toString() || '',
   }
 }
 
@@ -77,7 +66,7 @@ export function EnvironmentProvider({
   defaultCluster: string
 }) {
   const { query } = useRouter()
-  const cluster = (query.project || query.host)?.includes('devy')
+  const cluster = (query.project || query.host)?.includes('dev')
     ? 'devnet'
     : query.host?.includes('test')
     ? 'testnet'

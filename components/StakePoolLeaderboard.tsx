@@ -4,9 +4,9 @@ import type { PublicKey } from '@solana/web3.js'
 import { BN } from 'bn.js'
 import { Tooltip } from 'common/Tooltip'
 import { useStakePoolEntries } from 'hooks/useStakePoolEntries'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { getLuminance } from 'polished'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 import { useUTCNow } from 'providers/UTCNowProvider'
 import { useEffect, useState } from 'react'
 
@@ -15,7 +15,7 @@ export const DEFAULT_PAGE: [number, number] = [2, 0]
 
 export const StakePoolLeaderboard = () => {
   const { connection } = useEnvironmentCtx()
-  const { data: config } = useStakePoolMetadata()
+  const { data: config } = useStakePoolMetadataCtx()
   const stakePoolEntries = useStakePoolEntries()
   const { UTCNow } = useUTCNow()
 
@@ -95,7 +95,7 @@ export const StakePoolLeaderboard = () => {
           <div className="flex-[4]">Wallet</div>
           <div className="flex-1">Staked Tokens</div>
           <div className="flex flex-1 cursor-pointer items-center justify-end text-right">
-            <Tooltip title="Total milliseconds staked">
+            <Tooltip title="1 point for every 1000 seconds staked">
               <div className="flex items-center gap-1">
                 Stake Score{' '}
                 <InformationCircleIcon className="inline-block h-5 w-5" />

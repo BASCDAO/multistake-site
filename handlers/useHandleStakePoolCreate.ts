@@ -1,18 +1,17 @@
-import { tryPublicKey } from '@cardinal/common'
+import { executeTransaction, tryPublicKey } from '@cardinal/common'
 import {
   DEFAULT_PAYMENT_INFO,
   findStakePoolId,
   rewardsCenterProgram,
 } from '@cardinal/rewards-center'
-import { executeTransaction } from '@cardinal/staking'
 import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { PublicKey } from '@solana/web3.js'
 import { SystemProgram, Transaction } from '@solana/web3.js'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { handleError } from 'common/errors'
 import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
-import { useMutation, useQueryClient } from 'react-query'
 
 import type { StakePoolUpdateForm } from '@/components/admin/StakePoolUpdate'
 
@@ -40,7 +39,6 @@ export const useHandleStakePoolCreate = () => {
         .map((c) => tryPublicKey(c))
         .filter((c) => c) as PublicKey[]
 
-      console.log(values)
       const transaction = new Transaction()
       const program = rewardsCenterProgram(connection, wallet)
       const identifier = `pool-name-${Math.random()}`
@@ -66,7 +64,7 @@ export const useHandleStakePoolCreate = () => {
         })
         .instruction()
       transaction.add(ix)
-      const txid = await executeTransaction(connection, wallet, transaction, {
+      const txid = await executeTransaction(connection, transaction, wallet, {
         silent: false,
         signers: [],
       })

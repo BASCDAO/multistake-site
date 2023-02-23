@@ -1,19 +1,20 @@
+import { executeTransaction } from '@cardinal/common'
 import {
   DEFAULT_PAYMENT_INFO,
   findRewardDistributorId,
   rewardsCenterProgram,
 } from '@cardinal/rewards-center'
-import { executeTransaction } from '@cardinal/staking'
+import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { withInitRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
 import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey, Transaction } from '@solana/web3.js'
+import { useMutation } from '@tanstack/react-query'
 import { handleError } from 'common/errors'
 import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { isStakePoolV2, useStakePoolData } from 'hooks/useStakePoolData'
-import { useMutation } from 'react-query'
 
 import type { RewardDistributorForm } from '@/components/admin/RewardDistributorUpdate'
 
@@ -74,8 +75,9 @@ export const useHandleRewardDistributorCreate = () => {
         transaction.add(ix)
       } else {
         /////////////////// V1 ///////////////////
-
         await withInitRewardDistributor(transaction, connection, wallet, {
+          kind: RewardDistributorKind.Treasury,
+          supply: new BN(0),
           stakePoolId: stakePool.data.pubkey,
           defaultMultiplier: values.defaultMultiplier
             ? new BN(values.defaultMultiplier)
@@ -96,7 +98,7 @@ export const useHandleRewardDistributorCreate = () => {
         })
       }
 
-      return executeTransaction(connection, wallet, transaction, {})
+      return executeTransaction(connection, transaction, wallet, {})
     },
     {
       onSuccess: (txid) => {

@@ -1,6 +1,6 @@
 import type { AccountData } from '@cardinal/common'
 import { tryPublicKey } from '@cardinal/common'
-import { useQueries, useQuery } from 'react-query'
+import { useQueries, useQuery } from '@tanstack/react-query'
 
 import type { AllowedTokenData } from './useAllowedTokenDatas'
 import type { StakeEntryTokenData } from './useStakedTokenDatas'
@@ -22,7 +22,7 @@ export const getMintfromTokenData = (
 ) => {
   return (
     ('stakeEntry' in tokenData && tokenData.stakeEntry?.parsed?.stakeMint) ||
-    tryPublicKey(tokenData.metaplexData?.data.mint) ||
+    tokenData.metaplexData?.data.mint ||
     tryPublicKey(tokenData.tokenListData?.address)
   )
 }
@@ -38,12 +38,13 @@ export const mintMetadataQuery = async (
       parsed: json,
     }
   }
+  return null
 }
 
 export const useMintMetadata = (
   tokenData: AllowedTokenData | StakeEntryTokenData
 ) => {
-  return useQuery<MintMetadata | undefined>(
+  return useQuery<MintMetadata | null>(
     mintMetadataQueryKey(tokenData),
     () => mintMetadataQuery(tokenData),
     {
@@ -55,12 +56,12 @@ export const useMintMetadata = (
 export const useMintMetadatas = (
   tokenDatas: (AllowedTokenData | StakeEntryTokenData)[]
 ) => {
-  return useQueries(
-    tokenDatas.map((tokenData) => {
+  return useQueries({
+    queries: tokenDatas.map((tokenData) => {
       return {
         queryKey: mintMetadataQueryKey(tokenData),
         queryFn: () => mintMetadataQuery(tokenData),
       }
-    })
-  )
+    }),
+  })
 }

@@ -1,4 +1,5 @@
 import { BN } from '@project-serum/anchor'
+import { AsyncButton } from 'common/Button'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import {
   formatAmountAsDecimal,
@@ -11,8 +12,8 @@ import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 import { useRewards } from 'hooks/useRewards'
 import { useRewardsRate } from 'hooks/useRewardsRate'
 import { useStakedTokenDatas } from 'hooks/useStakedTokenDatas'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 
 export const PerformanceStats: React.FC<
   React.HTMLAttributes<HTMLDivElement>
@@ -21,7 +22,7 @@ export const PerformanceStats: React.FC<
   const rewardDistributorData = useRewardDistributorData()
   const rewardMintInfo = useRewardMintInfo()
   const rewardsRate = useRewardsRate()
-  const { data: stakePoolMetadata } = useStakePoolMetadata()
+  const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
   const stakedTokenDatas = useStakedTokenDatas()
   const rewards = useRewards()
   const handleClaimRewards = useHandleClaimRewards()
@@ -125,7 +126,7 @@ export const PerformanceStats: React.FC<
         )}
       </div>
       <div className="flex items-center justify-center">
-        <button
+        <AsyncButton
           onClick={async () =>
             handleClaimRewards.mutate({
               tokenDatas: stakedTokenDatas.data ?? [],
@@ -137,20 +138,22 @@ export const PerformanceStats: React.FC<
               stakePoolMetadata?.colors?.fontColorSecondary ||
               stakePoolMetadata?.colors?.fontColor,
           }}
-          className="flex items-center gap-2 rounded-md px-4 py-2 hover:scale-[1.03]"
+          className="flex items-center gap-2 rounded-md px-4 py-2"
         >
-          {handleClaimRewards.isLoading && (
-            <LoadingSpinner
-              fill={
-                stakePoolMetadata?.colors?.fontColor
-                  ? stakePoolMetadata?.colors?.fontColor
-                  : '#FFF'
-              }
-              height="20px"
-            />
-          )}
-          <div>Claim</div>
-        </button>
+          <>
+            {handleClaimRewards.isLoading && (
+              <LoadingSpinner
+                fill={
+                  stakePoolMetadata?.colors?.fontColor
+                    ? stakePoolMetadata?.colors?.fontColor
+                    : '#FFF'
+                }
+                height="20px"
+              />
+            )}
+            <div>Claim</div>
+          </>
+        </AsyncButton>
       </div>
     </div>
   )

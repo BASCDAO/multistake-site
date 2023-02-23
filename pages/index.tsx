@@ -4,8 +4,23 @@ import Homepage from '../components/Homepage'
 import StakePoolHome from './[stakePoolId]'
 
 function Home() {
-  const { stakePoolMetadata } = useStakePoolMetadataCtx()
-  return <div>{stakePoolMetadata ? <StakePoolHome /> : <Homepage />}</div>
+  const stakePoolMetadata = useStakePoolMetadataCtx()
+
+  if (!stakePoolMetadata.isFetched) {
+    return <></>
+  }
+
+  return (
+    <div>
+      {stakePoolMetadata.data ? (
+        <StakePoolHome
+          stakePoolMetadataName={stakePoolMetadata.data?.displayName ?? null}
+        />
+      ) : (
+        <Homepage />
+      )}
+    </div>
+  )
 }
 
 export default Home

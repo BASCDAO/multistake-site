@@ -2,11 +2,12 @@ import { shortPubKey } from '@cardinal/namespaces-components'
 import { css } from '@emotion/react'
 import { StakePoolConfig } from 'components/StakePoolConfig'
 import { useStakePoolId } from 'hooks/useStakePoolId'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 
+import { FeeInfo } from '@/components/fee-info/FeeInfo'
 import { StakePoolImage } from '@/components/StakePoolImage'
 
-import { HeroStats } from '../components/HeroStats'
+import { HeroStats } from '../components/hero-stats/HeroStats'
 
 export const HeroLarge: React.FC = () => {
   const stakePoolId = useStakePoolId()
@@ -41,6 +42,7 @@ export const HeroLarge: React.FC = () => {
               } pool.`}
           </div>
           <StakePoolConfig />
+          <FeeInfo />
         </div>
         <HeroStats />
       </div>
