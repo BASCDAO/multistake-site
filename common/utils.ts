@@ -1,132 +1,158 @@
-import type { BN } from '@project-serum/anchor'
-import type { Mint } from '@solana/spl-token'
-import { BigNumber } from 'bignumber.js'
+import type { Cluster } from '@solana/web3.js'
+import { PublicKey } from '@solana/web3.js'
 
-const SECONDS_PER_DAY = 86400
-
-export function getDaysFromTimestamp(unixTimestamp: number) {
-  return unixTimestamp / SECONDS_PER_DAY
+export function shortPubKey(pubkey: PublicKey | string | null | undefined) {
+  if (!pubkey) return ''
+  return `${pubkey?.toString().substring(0, 4)}..${pubkey
+    ?.toString()
+    .substring(pubkey?.toString().length - 4)}`
 }
 
-export function getTimestampFromDays(days: number) {
-  return days * SECONDS_PER_DAY
-}
-
-/// Formats mint amount (natural units) as a decimal string
-export function fmtMintAmount(mint: Mint | undefined, mintAmount: BN) {
-  return mint
-    ? getMintDecimalAmount(mint, mintAmount).toFormat()
-    : new BigNumber(mintAmount.toString()).toFormat()
-}
-
-// Converts mint amount (natural units) to decimals
-export function getMintDecimalAmount(mint: Mint, mintAmount: BN) {
-  return new BigNumber(mintAmount.toString()).shiftedBy(-mint.decimals)
-}
-
-// Parses input string in decimals to mint amount (natural units)
-// If the input is already a number then converts it to mint natural amount
-export function parseMintNaturalAmountFromDecimal(
-  decimalAmount: string | number,
-  mintDecimals: number
+export function pubKeyUrl(
+  pubkey: PublicKey | null | undefined,
+  cluster: string
 ) {
-  if (typeof decimalAmount === 'number') {
-    return getMintNaturalAmountFromDecimal(decimalAmount, mintDecimals)
+  if (!pubkey) return 'https://explorer.solana.com'
+  return `https://explorer.solana.com/address/${pubkey.toString()}${
+    cluster === 'devnet' ? '?cluster=devnet' : ''
+  }`
+}
+
+export function metadataUrl(
+  pubkey: PublicKey | null | undefined,
+  cluster: string
+) {
+  if (!pubkey) return 'https://www.magiceden.io/item-details/'
+  return `https://www.magiceden.io/item-details/${pubkey.toString()}${
+    cluster === 'devnet' ? '?cluster=devnet' : ''
+  }`
+}
+
+export function shortDateString(utc_seconds: number) {
+  return `${new Date(utc_seconds * 1000).toLocaleDateString([], {
+    month: '2-digit',
+    day: '2-digit',
+    year: '2-digit',
+  })} ${new Date(utc_seconds * 1000).toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+  })}`
+}
+
+export function longDateString(utcSeconds: number) {
+  return new Date(utcSeconds * 1000).toLocaleTimeString(['en-US'], {
+    year: '2-digit',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZoneName: 'short',
+  })
+}
+
+export function secondstoDuration(durationSeconds: number) {
+  const years = Math.floor(durationSeconds / 31536000)
+  const months = Math.floor((durationSeconds % 31536000) / 2592000)
+  const weeks = Math.floor((durationSeconds % 2592000) / 604800)
+  const days = Math.floor((durationSeconds % 604800) / 86400)
+  const hours = Math.floor((durationSeconds % 86400) / 3600)
+  const minutes = Math.floor((durationSeconds % 3600) / 60)
+  const seconds = Math.ceil(durationSeconds % 60)
+  let duration = ''
+  const optionalVals = [`${years}Y`, `${months}M`, `${weeks}w`, `${days}d`]
+  const vals = [`${hours}h`, `${minutes}m`, `${seconds}s`]
+  for (const val of optionalVals) {
+    if (parseInt(val.substring(0, val.length - 1)) > 0) {
+      duration += val + ' '
+    }
   }
-
-  if (mintDecimals === 0) {
-    return parseInt(decimalAmount)
+  for (const val of vals) {
+    duration += val + ' '
   }
-
-  const floatAmount = parseFloat(decimalAmount)
-  return getMintNaturalAmountFromDecimal(floatAmount, mintDecimals)
+  return duration
 }
 
-// Converts amount in decimals to mint amount (natural units)
-export function getMintNaturalAmountFromDecimal(
-  decimalAmount: number,
-  decimals: number
-) {
-  return new BigNumber(decimalAmount).shiftedBy(decimals).toNumber()
+export const withSleep = async (fn: () => any, sleep = 2000) => {
+  await new Promise((r) => setTimeout(r, sleep))
+  await fn()
 }
 
-// Calculates mint min amount as decimal
-export function getMintMinAmountAsDecimal(mint: Mint) {
-  return new BigNumber(1).shiftedBy(-mint.decimals).toNumber()
+export const firstParam = (param: string | string[] | undefined): string => {
+  if (!param) return ''
+  return typeof param === 'string' ? param : param[0] || ''
 }
 
-export function formatMintNaturalAmountAsDecimal(
-  mint: Mint,
-  naturalAmount: BN,
-  decimalPlaces?: number
-) {
-  return getMintDecimalAmountFromNatural(mint, naturalAmount).toFormat(
-    decimalPlaces
+export const camelCase = (str: string) => {
+  return str
+    .split(' ')
+    .map((x) => x.charAt(0).toUpperCase() + x.slice(1))
+    .join('')
+}
+
+export const getMintsDetails = async () =>
+  await fetch(
+    'https://raw.githubusercontent.com/solana-labs/token-list/main/src/tokens/solana.tokenlist.json'
+  )
+    .then((response) => response.json())
+    .then((data) => data['tokens'])
+
+export const tryPublicKey = (
+  publicKeyString: PublicKey | string | string[] | undefined | null
+): PublicKey | null => {
+  if (publicKeyString instanceof PublicKey) return publicKeyString
+  if (!publicKeyString) return null
+  try {
+    return new PublicKey(publicKeyString)
+  } catch (e) {
+    return null
+  }
+}
+
+export function getLink(path: string, withParams = true) {
+  return `${window.location.origin}${path}${
+    withParams
+      ? path.includes('?') && window.location.search
+        ? `${window.location.search.replace('?', '&')}`
+        : window.location.search ?? ''
+      : ''
+  }`
+}
+
+export const hexColor = (colorString: string): string => {
+  if (colorString.includes('#')) return colorString
+  const [r, g, b] = colorString
+    .replace('rgb(', '')
+    .replace('rgba(', '')
+    .replace(')', '')
+    .replace(' ', '')
+    .split(',')
+  return (
+    '#' +
+    [r, g, b]
+      .map((x) => {
+        const hex = parseInt(x || '').toString(16)
+        return hex.length === 1 ? '0' + hex : hex
+      })
+      .join('')
   )
 }
 
-export function getMintDecimalAmountFromNatural(mint: Mint, naturalAmount: BN) {
-  return new BigNumber(naturalAmount.toString()).shiftedBy(-mint.decimals)
+export const contrastColorMode = (bgColor: string): [string, boolean] => {
+  return parseInt(hexColor(bgColor).replace('#', ''), 16) < 0xffffff / 2
+    ? ['#ffffff', true]
+    : ['#000000', false]
 }
 
-export function getMintDecimalAmountFromNaturalV2(
-  decimals: number,
-  naturalAmount: BN
-) {
-  return new BigNumber(naturalAmount.toString()).shiftedBy(-decimals)
+export const camelCaseToTitle = (str: string) => {
+  return str
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/^./, (str) => str.toUpperCase())
 }
 
-export function formatAmountAsDecimal(
-  decimals: number,
-  naturalAmount: BN,
-  decimalPlaces?: number
-) {
-  return new Number(
-    new BigNumber(naturalAmount.toString())
-      .shiftedBy(-decimals)
-      .toFixed(decimalPlaces ?? 0)
-  ).toString()
-}
-
-export function tryFormatInput(
-  stringAmount: string | undefined,
-  decimals: number | undefined,
-  defaultValue: string
-): string {
-  if (!stringAmount) return defaultValue
-  const trailingZeros = stringAmount.match(/\.(0+)?$/)
-  try {
-    if (new BigNumber(stringAmount.replace(',', '')).isFinite()) {
-      return new BigNumber(stringAmount.replace(',', ''))
-        .shiftedBy(-(decimals || 0))
-        .toFormat({
-          groupSeparator: '',
-          decimalSeparator: '.',
-        })
-        .concat(trailingZeros && trailingZeros[0] ? trailingZeros[0] : '')
-    }
-    return defaultValue
-  } catch (e) {
-    return defaultValue
-  }
-}
-
-export function tryParseInput(
-  stringDecimal: string | undefined,
-  decimals: number | undefined,
-  defaultValue: string
-): string {
-  if (!stringDecimal) return '0'
-  const trailingZeros = stringDecimal.match(/\.(0+)?$/)
-  try {
-    if (new BigNumber(stringDecimal.replace(',', '')).isFinite()) {
-      return new BigNumber(stringDecimal.replace(',', ''))
-        .shiftedBy(decimals || 0)
-        .toFixed(0, BigNumber.ROUND_FLOOR)
-        .concat(trailingZeros && trailingZeros[0] ? trailingZeros[0] : '')
-    }
-    return defaultValue
-  } catch (e) {
-    return defaultValue
-  }
+export const withCluster = (s: string, cluster: Cluster) => {
+  return `${s}${
+    cluster !== 'mainnet-beta'
+      ? `${s.includes('?') ? '&' : '?'}cluster=${cluster}`
+      : ''
+  }`
 }
