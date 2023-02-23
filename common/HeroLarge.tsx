@@ -11,7 +11,7 @@ import { HeroStats } from '../components/hero-stats/HeroStats'
 
 export const HeroLarge: React.FC = () => {
   const stakePoolId = useStakePoolId()
-  const { data: config } = useStakePoolMetadata()
+  const { data: config } = useStakePoolMetadataCtx()
   return (
     <div className="relative flex w-full flex-wrap items-stretch justify-center gap-8 py-8 lg:flex-nowrap lg:justify-between lg:gap-24">
       <div
