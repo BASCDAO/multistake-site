@@ -7,6 +7,9 @@ import type { Connection } from '@solana/web3.js'
 import { useQuery } from '@tanstack/react-query'
 import type { StakePoolMetadata } from 'api/mapping'
 import { stakePoolsWithHostnames } from 'api/mapping'
+
+import { stakePoolMetadatas } from 'api/mapping'
+
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
@@ -17,7 +20,7 @@ export const useStakePoolMetadata = (hostname?: string) => {
   } = useRouter()
 
   return useQuery(
-    ['useStakePoolMetadata', stakePoolId?.toString()],
+    ['useStakePoolMetadatas', stakePoolId?.toString()],
     async () => {
       const hostnameConfigFound = stakePoolsWithHostnames.find((config) =>
         hostname?.includes(config.hostname)
@@ -30,6 +33,22 @@ export const useStakePoolMetadata = (hostname?: string) => {
     }
   )
 }
+{/** 
+return useQuery(
+  ['useStakePoolMetadata', stakePoolId?.toString()],
+  async () => {
+    const hostnameConfigFound = stakePoolsWithHostnames.find((config) =>
+      hostname?.includes(config.hostname)
+    )
+    if (!hostnameConfigFound && !stakePoolId) return null
+    return stakePoolConfig(
+      connection,
+      hostnameConfigFound?.stakePoolAddress ?? stakePoolId!.toString()
+    )
+  }
+)
+}
+*/}
 
 export const stakePoolConfig = async (
   connection: Connection,
