@@ -15,9 +15,9 @@ export const Header = () => {
   const { environment, secondaryConnection } = useEnvironmentCtx()
   const wallet = useWallet()
   const walletModal = useWalletModal()
-  const stakePoolId = useStakePoolId()
-  const { data: stakePoolMetadata } = useStakePoolMetadata()
-
+  const { data: stakePoolId } = useStakePoolId()
+  const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
+  
   return (
     <div>
       <div
