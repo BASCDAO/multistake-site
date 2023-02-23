@@ -310,7 +310,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://bascdao.net/',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
-    maxStaked: 4444,
+    maxStaked: 5600,
     imageUrl: '/logos/tesmophoria.png',
     styles: {
       fontFamily: 'Industry, sans-serif',
